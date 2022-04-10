@@ -17,6 +17,7 @@ func EnsureAuth(c *gin.Context) {
                 "message": "Invalid token.",
             })
 
+            c.Abort()
             return
         }
 

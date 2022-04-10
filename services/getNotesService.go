@@ -12,8 +12,9 @@ type GetNotesResponse struct {
 
 func GetNotesService(c *gin.Context) {
     var notes []GetNotesResponse
+    token := c.MustGet("token")
 
-    filter, err := db.Notes.Find(db.Ctx, bson.M{"owner": c.MustGet("token")})
+    filter, err := db.Notes.Find(db.Ctx, bson.M{"owner": token})
     if err != nil {
         c.JSON(400, gin.H {
             "message": "An error was occurred during insert.",

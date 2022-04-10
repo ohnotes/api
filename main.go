@@ -19,6 +19,7 @@ func main() {
     app.GET("/note/:id", middlewares.EnsureAuth, services.NoteService)
     app.GET("/getNotes", middlewares.EnsureAuth, services.GetNotesService)
     app.GET("/destructive/:id", services.UpdateDestructive)
+    app.GET("/wipe", middlewares.EnsureAuth, services.WipeService)
     app.POST("/generate", services.GenerateService)
     app.POST("/new", middlewares.EnsureAuth, services.NewService)
     app.POST("/update/:id", services.UpdateNoteService)
