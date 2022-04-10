@@ -1,10 +1,10 @@
-<br>
+## ❗ Important
 [Frontend repository](https://github.com/ohnotes/ohnotes)
 
 <br><br>
 ## 📖 Summary
 [FAQ](#faq)<br>
-[Setup](#setup)<br>
+[Setup](#setup)
 
 <br><a name="faq"></a>
 ## ❓ FAQ
