@@ -16,10 +16,11 @@ func main() {
         AllowHeaders: []string{"Authorization", "Content-Type"},
     }))
 
-    app.GET("/note/:id", middlewares.EnsureAuth, services.NoteService)
+    app.GET("/note/:id", services.NoteService)
     app.GET("/getNotes", middlewares.EnsureAuth, services.GetNotesService)
     app.GET("/destructive/:id", services.UpdateDestructive)
     app.GET("/wipe", middlewares.EnsureAuth, services.WipeService)
+    app.GET("/deleteall", middlewares.EnsureAuth, services.DeleteAllService)
     app.POST("/generate", services.GenerateService)
     app.POST("/new", middlewares.EnsureAuth, services.NewService)
     app.POST("/update/:id", services.UpdateNoteService)

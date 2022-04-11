@@ -24,7 +24,6 @@ func NoteService(c *gin.Context) {
     var response NoteResponse
 
     id := c.Param("id")
-    token := c.MustGet("token")
     pass, _ := c.GetQuery("pass")
     
     err := db.Notes.FindOne(db.Ctx, bson.M{"id": id}).Decode(&response)
@@ -34,19 +33,13 @@ func NoteService(c *gin.Context) {
         return
     }
 
-    if response.Owner != token {
-        if response.Private {
-            err := bcrypt.CompareHashAndPassword([]byte(response.Password), []byte(pass))
-            if err != nil {
-                c.JSON(403, forbidden)
+    if response.Private {
+        err := bcrypt.CompareHashAndPassword([]byte(response.Password), []byte(pass))
+        if err != nil {
+            c.JSON(403, forbidden)
 
-                return
-            }
+            return
         }
-
-    } else {
-        response.IsOwner = true
-
     }
 
     c.JSON(200, gin.H {
