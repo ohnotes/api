@@ -7,21 +7,8 @@ import (
     "golang.org/x/crypto/bcrypt"
 )
 
-type NoteResponse struct {
-    ID string `json:"id"`
-    Text string `json:"text"`
-    Name string `json:"name"`
-    Observation string `json:"observation"`
-    Private bool `json:"private"`
-    IsOwner bool `json:"isOwner"`
-    Owner string `json:"owner"`
-    Password string `json:"password"`
-    Destructive bool `json:"destructive"`
-    Times int `json:"times"`
-}
-
 func NoteService(c *gin.Context) {
-    var response NoteResponse
+    var response Note
 
     id := c.Param("id")
     pass, _ := c.GetQuery("pass")
@@ -48,7 +35,7 @@ func NoteService(c *gin.Context) {
         "text": response.Text,
         "observation": response.Observation,
         "private": response.Private,
-        "isOwner": response.IsOwner,
         "destructive": response.Destructive,
+        "shared": response.Shared,
     });
 }

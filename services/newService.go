@@ -9,7 +9,7 @@ import (
     "golang.org/x/crypto/bcrypt"
 )
 
-type CreateNote struct {
+type Note struct {
     ID string `json:"id"`
     Name string `json:"name"`
     Observation string `json:"observation,omitempty"`
@@ -20,10 +20,11 @@ type CreateNote struct {
     Password string `json:"password"`
     Destructive bool `json:"destructive"`
     Times int `json:"times"`
+    Shared bool `json:"shared"`
 }
 
 func NewService(c *gin.Context) {
-    var create CreateNote
+    var create Note
 
     token := c.MustGet("token")
     id := uuid.New().String()
@@ -45,7 +46,7 @@ func NewService(c *gin.Context) {
         return
     }
 
-    _, err = db.Notes.InsertOne(db.Ctx, CreateNote {
+    _, err = db.Notes.InsertOne(db.Ctx, Note {
         ID: id,
         Name: create.Name,
         Observation: create.Observation,
@@ -56,6 +57,7 @@ func NewService(c *gin.Context) {
         Password: string(hashed),
         Destructive: create.Destructive,
         Times: create.Times,
+        Shared: create.Shared,
     })
     if err != nil {
         c.JSON(400, gin.H {

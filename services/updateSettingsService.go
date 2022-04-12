@@ -16,7 +16,7 @@ type UpdateSettingsResponse struct {
 
 func UpdateSettingsService(c *gin.Context) {
     var response UpdateSettingsResponse
-    var note NoteResponse
+    var note Note
 
     token := c.MustGet("token")
     
