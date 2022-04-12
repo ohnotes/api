@@ -32,22 +32,20 @@ func UpdateNoteService(c *gin.Context) {
     if len(c.Request.Header["Authorization"]) != 0 {
         token := strings.Split(c.Request.Header["Authorization"][0], " ")[1]
 
-        if !note.Shared && note.Owner != token {
+        if note.Owner != token {
             c.JSON(403, forbidden)
 
             return
         }
 
     } else {
-        if !note.Shared {
-            c.JSON(403, forbidden)
+        c.JSON(403, forbidden)
 
-            return
-        }
+        return
     }
     
     update, err := db.Notes.UpdateOne(db.Ctx, bson.M{"id": response.ID}, bson.M{"$set": bson.M{"text": response.Text}})
-    if err != nil || update.MatchedCount == 0 || update.ModifiedCount == 0 {
+    if err != nil || update.MatchedCount == 0 {
         c.JSON(400, gin.H {
             "message": "An error was occurred during note update.",
         })

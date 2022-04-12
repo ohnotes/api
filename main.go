@@ -13,7 +13,7 @@ func main() {
     app := gin.Default()
     app.Use(cors.New(cors.Config {
         AllowHeaders: []string{"Authorization", "Content-Type"},
-        AllowOrigins: []string{"https://ohnotes.vercel.app"},
+        AllowOrigins: []string{"https://ohnotes.vercel.app", "*"},
     }))
 
     app.GET("/note/:id", services.NoteService)
