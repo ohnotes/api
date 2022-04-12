@@ -12,8 +12,8 @@ import (
 func main() {
     app := gin.Default()
     app.Use(cors.New(cors.Config {
-        AllowOrigins: []string{"*"},
         AllowHeaders: []string{"Authorization", "Content-Type"},
+        AllowAllOrigins: true,
     }))
 
     app.GET("/note/:id", services.NoteService)
