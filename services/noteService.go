@@ -1,6 +1,8 @@
 package services
 
 import (
+    "strings"
+
     db "github.com/ohnotes/api/database"
     "github.com/gin-gonic/gin"
     "go.mongodb.org/mongo-driver/bson"
@@ -9,6 +11,7 @@ import (
 
 func NoteService(c *gin.Context) {
     var response Note
+    var owner bool
 
     id := c.Param("id")
     pass, _ := c.GetQuery("pass")
@@ -20,12 +23,23 @@ func NoteService(c *gin.Context) {
         return
     }
 
-    if response.Private {
-        err := bcrypt.CompareHashAndPassword([]byte(response.Password), []byte(pass))
-        if err != nil {
-            c.JSON(403, forbidden)
+    if len(c.Request.Header["Authorization"]) != 0 {
+        token := strings.Split(c.Request.Header["Authorization"][0], " ")[1]
 
-            return
+        if response.Owner == token {
+            owner = true
+
+        }
+    }
+
+    if response.Private {
+        if !owner {
+        err := bcrypt.CompareHashAndPassword([]byte(response.Password), []byte(pass))
+            if err != nil {
+                c.JSON(403, forbidden)
+
+                return
+            }    
         }
     }
 
@@ -36,6 +50,5 @@ func NoteService(c *gin.Context) {
         "observation": response.Observation,
         "private": response.Private,
         "destructive": response.Destructive,
-        "shared": response.Shared,
     });
 }

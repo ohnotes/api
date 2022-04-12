@@ -20,7 +20,6 @@ type Note struct {
     Password string `json:"password"`
     Destructive bool `json:"destructive"`
     Times int `json:"times"`
-    Shared bool `json:"shared"`
 }
 
 func NewService(c *gin.Context) {
@@ -37,16 +36,14 @@ func NewService(c *gin.Context) {
         return
     }
 
-    hashed, err := bcrypt.GenerateFromPassword([]byte(create.Password), 12)
-    if err != nil {
-        c.JSON(400, gin.H {
-            "message": "Failed to create a new note.",
-        })
+    var password []byte
 
-        return
+    if create.Private {
+        password, _ = bcrypt.GenerateFromPassword([]byte(create.Password), 12)
+
     }
 
-    _, err = db.Notes.InsertOne(db.Ctx, Note {
+    _, err := db.Notes.InsertOne(db.Ctx, Note {
         ID: id,
         Name: create.Name,
         Observation: create.Observation,
@@ -54,10 +51,9 @@ func NewService(c *gin.Context) {
         Text: create.Text,
         CreatedAt: create.CreatedAt,
         Owner: fmt.Sprintf("%v", token),
-        Password: string(hashed),
+        Password: string(password),
         Destructive: create.Destructive,
         Times: create.Times,
-        Shared: create.Shared,
     })
     if err != nil {
         c.JSON(400, gin.H {

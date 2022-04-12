@@ -11,9 +11,10 @@ import (
 
 func main() {
     app := gin.Default()
+
     app.Use(cors.New(cors.Config {
         AllowHeaders: []string{"Authorization", "Content-Type"},
-        AllowOrigins: []string{"https://ohnotes.vercel.app", "*"},
+        AllowOrigins: []string{"*"},
     }))
 
     app.GET("/note/:id", services.NoteService)
@@ -23,7 +24,7 @@ func main() {
     app.GET("/deleteall", middlewares.EnsureAuth, services.DeleteAllService)
     app.POST("/generate", services.GenerateService)
     app.POST("/new", middlewares.EnsureAuth, services.NewService)
-    app.POST("/update/:id", services.UpdateNoteService)
+    app.POST("/update/:id", middlewares.EnsureAuth, middlewares.EnsureOwner, services.UpdateNoteService)
     app.POST("/update/:id/settings", middlewares.EnsureAuth, middlewares.EnsureOwner, services.UpdateSettingsService)
     app.POST("/delete/:id", middlewares.EnsureAuth, middlewares.EnsureOwner, services.DeleteService)
 
