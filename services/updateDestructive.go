@@ -8,7 +8,7 @@ import (
 
 type DestructiveResponse struct {
     Destructive bool `json:"destructive"`
-    Times int `json:"times"`
+    Turns int `json:"turns"`
 }
 
 func UpdateDestructive(c *gin.Context) {
@@ -23,7 +23,7 @@ func UpdateDestructive(c *gin.Context) {
     }
 
     if note.Destructive {
-        if note.Times < 1 {
+        if note.Turns < 1 {
             _, err := db.Notes.DeleteOne(db.Ctx, note)
             if err != nil {
                 c.JSON(400, gin.H {
@@ -34,7 +34,7 @@ func UpdateDestructive(c *gin.Context) {
             }
         
         } else {
-            update, err := db.Notes.UpdateOne(db.Ctx, bson.M{"id": id}, bson.M{"$set": bson.M{"times": note.Times - 1}})
+            update, err := db.Notes.UpdateOne(db.Ctx, bson.M{"id": id}, bson.M{"$set": bson.M{"turns": note.Turns - 1}})
             if err != nil || update.MatchedCount == 0 {
                 c.JSON(400, gin.H {
                     "message": "Failed to update note.",

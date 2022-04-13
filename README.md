@@ -3,8 +3,15 @@
 
 <br><br>
 ## 📖 Summary
+[Changelog](#changelog)<br>
 [FAQ](#faq)<br>
 [Setup](#setup)
+
+<br><a name="changelog"></a>
+## ♻️ Changelog
+- Fixed functionality of 'destructive' messages.
+- Little fixes around the project.
+- Fixes on [Frontend](https://github.com/ohnotes/ohnotes)
 
 <br><a name="faq"></a>
 ## ❓ FAQ

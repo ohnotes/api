@@ -19,7 +19,7 @@ type Note struct {
     Owner string `json:"owner"`
     Password string `json:"password"`
     Destructive bool `json:"destructive"`
-    Times int `json:"times"`
+    Turns int `json:"turns"`
 }
 
 func NewService(c *gin.Context) {
@@ -53,7 +53,7 @@ func NewService(c *gin.Context) {
         Owner: fmt.Sprintf("%v", token),
         Password: string(password),
         Destructive: create.Destructive,
-        Times: create.Times,
+        Turns: create.Turns,
     })
     if err != nil {
         c.JSON(400, gin.H {
